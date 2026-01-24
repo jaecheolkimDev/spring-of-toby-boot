@@ -109,6 +109,20 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- 메일 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+
+		<!-- Springdoc-OpenAPI 라이브러리 : 스프링 공식은 아니라서 버전 작성 필수 -->
+		<!-- 스프링부트 3.x 버전이므로 Swagger도 최신 버전으로 맞춤 -->
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.8.3</version>
+		</dependency>
 	</dependencies>
 
 	<build>
