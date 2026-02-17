@@ -9,20 +9,20 @@ spring:
     password: book
     driver-class-name: com.mysql.cj.jdbc.Driver
   # H2 설정 (테스트용, 필요시 활성화-위에꺼 주석해야함)
-#      url: jdbc:h2:mem:testdb
-#      driverClassName: org.h2.Driver
-#      username: sa
-#      password:
+  #      url: jdbc:h2:mem:testdb
+  #      driverClassName: org.h2.Driver
+  #      username: sa
+  #      password:
 
   # JPA 설정
   jpa:
     hibernate:
       ddl-auto: create  # 데이터베이스 초기화 전략(none, create, create-drop, update, validate)
-    show-sql: true
+    show-sql: false       # 실행되는 쿼리 콘솔 출력
     properties:
       hibernate:
-        format_sql: true  # 콘솔창에 출력되는 쿼리를 가독성이 좋게 포맷팅
-        show_sql: true    # 실행되는 쿼리 콘솔 출력
+        format_sql: false  # 콘솔창에 출력되는 쿼리를 가독성이 좋게 포맷팅
+        show_sql: false   # 둘 다 사용?
     open-in-view: true    # true로 경고만 없애기 (추후 - 지연 로딩 처리를 서비스 레이어 안에서 다 해결하기)
 
   # H2 콘솔 설정
@@ -68,9 +68,13 @@ logging:
       springframework:
         web: DEBUG
       hibernate:
+        SQL: OFF  # SQL 쿼리가 찍히는 것을 방지 (P6Spy가 이미 찍고 있으므로)
         orm:
           jdbc:
-            bind: trace  # Hibernate 6.x 이상 (Spring Boot 3.x)
+            bind: OFF  # Hibernate 6.x 이상 (Spring Boot 3.x)
+        type:
+          descriptor:
+            sql: OFF
       thymeleaf: DEBUG
 
 

@@ -12,10 +12,10 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-@Table(name="item")
-public class ItemEntity {
+@Table(name="shoppingItem")
+public class ShoppingItemEntity extends ShoppingBaseEntity {
     @Id
-    @Column(name="item_id")
+    @Column(name="shopping_item_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;                        // 상품 코드
 
@@ -34,7 +34,4 @@ public class ItemEntity {
 
     @Enumerated(EnumType.STRING)
     private ItemSellStatus itemSellStatus;  // 상품 판매 상태
-
-    private LocalDateTime regTime;          // 등록 시간
-    private LocalDateTime updateTime;       // 수정 시간
 }

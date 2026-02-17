@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest(properties = "springdoc.api-docs.enabled=false")
 //@TestPropertySource(locations = "classpath:application-test.yml") // 어노테이션이 역할을 제대로 못함
-@ActiveProfiles("test") // application-test.yml을 선택함
 @AutoConfigureMockMvc   // MockMvc 테스트 설정
 public class ShoppingMemberControllerTest {
     /** 테스트 패키지 경로 일치 */
@@ -78,6 +77,42 @@ public class ShoppingMemberControllerTest {
                         .loginProcessingUrl("/shoppingMembers/login")
                         .user(email).password("12345"))
                 .andExpect(SecurityMockMvcResultMatchers.unauthenticated());  // 인증되었는지 확인
+    }
+
+    public ShoppingMemberEntity createMember() {
+        MemberFormDto memberFormDto = new MemberFormDto();
+        memberFormDto.setEmail("test@email.com");
+        memberFormDto.setName("홍길동");
+        memberFormDto.setAddress("서울시 마포구 합정동");
+        memberFormDto.setPassword("1234");
+        return ShoppingMemberEntity.createMember(memberFormDto, passwordEncoder);
+    }
+
+    @Test
+    @DisplayName("회원가입 테스트")
+    public void saveMemberTest() {
+        ShoppingMemberEntity member = createMember();
+        ShoppingMemberEntity savedMember = shoppingMemberService.saveMember(member);
+
+        assertEquals(member.getEmail(), savedMember.getEmail());
+        assertEquals(member.getName(), savedMember.getName());
+        assertEquals(member.getAddress(), savedMember.getAddress());
+        assertEquals(member.getPassword(), savedMember.getPassword());
+        assertEquals(member.getRole(), savedMember.getRole());
+    }
+
+    @Test
+    @DisplayName("중복 회원 가입 테스트")
+    public void saveDuplicateMemberTest() {
+        ShoppingMemberEntity member1 = createMember();
+        ShoppingMemberEntity member2 = createMember();
+        shoppingMemberService.saveMember(member1);
+
+        Throwable e = assertThrows(IllegalStateException.class, () -> {
+            shoppingMemberService.saveMember(member2);
+        });
+
+        assertEquals("이미 가입된 회원입니다.", e.getMessage());
     }
 
     @AfterEach

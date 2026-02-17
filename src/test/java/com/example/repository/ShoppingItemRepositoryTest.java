@@ -1,8 +1,8 @@
 package com.example.repository;
 
 import com.example.code.ItemSellStatus;
-import com.example.entity.ItemEntity;
-import com.example.entity.QItemEntity;
+import com.example.entity.ShoppingItemEntity;
+import com.example.entity.QShoppingItemEntity;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -15,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.ActiveProfiles;
 import org.thymeleaf.util.StringUtils;
 
 import java.time.LocalDateTime;
@@ -23,10 +22,9 @@ import java.util.List;
 
 @SpringBootTest(properties = "springdoc.api-docs.enabled=false")
 //@TestPropertySource(locations = "classpath:application-test.yml") // 어노테이션이 역할을 제대로 못함
-@ActiveProfiles("test") // application-test.yml을 선택함
-class ItemRepositoryTest {
+class ShoppingItemRepositoryTest {
     @Autowired
-    ItemRepository itemRepository;
+    ShoppingItemRepository shoppingItemRepository;
 
     // 영속성 컨텍스트 사용
     @PersistenceContext
@@ -35,21 +33,21 @@ class ItemRepositoryTest {
     @Test
     @DisplayName("상품 저장 테스트")
     public void createItemTest() {
-        ItemEntity itemEntity = new ItemEntity();
-        itemEntity.setItemNm("테스트 상품");
-        itemEntity.setPrice(10000);
-        itemEntity.setItemDetail("테스트 상품 상세 설명");
-        itemEntity.setItemSellStatus(ItemSellStatus.SELL);
-        itemEntity.setStockNumber(100);
-        itemEntity.setRegTime(LocalDateTime.now());
-        itemEntity.setUpdateTime(LocalDateTime.now());
-        ItemEntity savedItemEntity = itemRepository.save(itemEntity);
-        System.out.println(savedItemEntity.toString());
+        ShoppingItemEntity shoppingItemEntity = new ShoppingItemEntity();
+        shoppingItemEntity.setItemNm("테스트 상품");
+        shoppingItemEntity.setPrice(10000);
+        shoppingItemEntity.setItemDetail("테스트 상품 상세 설명");
+        shoppingItemEntity.setItemSellStatus(ItemSellStatus.SELL);
+        shoppingItemEntity.setStockNumber(100);
+        shoppingItemEntity.setRegTime(LocalDateTime.now());
+        shoppingItemEntity.setUpdateTime(LocalDateTime.now());
+        ShoppingItemEntity savedShoppingItemEntity = shoppingItemRepository.save(shoppingItemEntity);
+        System.out.println(savedShoppingItemEntity.toString());
     }
 
     public void createItemList() {
         for(int i=1; i<=10; i++) {
-            ItemEntity item = new ItemEntity();
+            ShoppingItemEntity item = new ShoppingItemEntity();
             item.setItemNm("테스트 상품" +  i);
             item.setPrice(10000 + i);
             item.setItemDetail("테스트 상품 상세 설명" + i);
@@ -57,7 +55,7 @@ class ItemRepositoryTest {
             item.setStockNumber(100);
             item.setRegTime(LocalDateTime.now());
             item.setUpdateTime(LocalDateTime.now());
-            ItemEntity savedItem = itemRepository.save(item);
+            ShoppingItemEntity savedItem = shoppingItemRepository.save(item);
         }
     }
 
@@ -65,8 +63,8 @@ class ItemRepositoryTest {
     @DisplayName("상품명 조회 테스트")
     public void findByItemNmTest() {
         this.createItemList();
-        List<ItemEntity> itemEntityList = itemRepository.findByItemNm("테스트 상품1");
-        for(ItemEntity item : itemEntityList) {
+        List<ShoppingItemEntity> shoppingItemEntityList = shoppingItemRepository.findByItemNm("테스트 상품1");
+        for(ShoppingItemEntity item : shoppingItemEntityList) {
             System.out.println(item.toString());
         }
     }
@@ -75,8 +73,8 @@ class ItemRepositoryTest {
     @DisplayName("상품명, 상품상세설명 or 테스트")
     public void findByItemDetailTest() {
         this.createItemList();
-        List<ItemEntity> itemEntityList = itemRepository.findByItemNmOrItemDetail("테스트 상품1", "테스트 상품 상세 설명5");
-        for(ItemEntity item : itemEntityList) {
+        List<ShoppingItemEntity> shoppingItemEntityList = shoppingItemRepository.findByItemNmOrItemDetail("테스트 상품1", "테스트 상품 상세 설명5");
+        for(ShoppingItemEntity item : shoppingItemEntityList) {
             System.out.println(item.toString());
         }
     }
@@ -85,8 +83,8 @@ class ItemRepositoryTest {
     @DisplayName("가격 LessThan 테스트")
     public void findByPriceLessThanTest() {
         this.createItemList();
-        List<ItemEntity> itemEntityList = itemRepository.findByPriceLessThan(10005);
-        for(ItemEntity item : itemEntityList) {
+        List<ShoppingItemEntity> shoppingItemEntityList = shoppingItemRepository.findByPriceLessThan(10005);
+        for(ShoppingItemEntity item : shoppingItemEntityList) {
             System.out.println(item.toString());
         }
     }
@@ -95,8 +93,8 @@ class ItemRepositoryTest {
     @DisplayName("가격 내림차순 조회 테스트")
     public void findByPriceLessThanOrderByPriceDesc() {
         this.createItemList();
-        List<ItemEntity> itemEntityList = itemRepository.findByPriceLessThanOrderByPriceDesc(10005);
-        for(ItemEntity item : itemEntityList) {
+        List<ShoppingItemEntity> shoppingItemEntityList = shoppingItemRepository.findByPriceLessThanOrderByPriceDesc(10005);
+        for(ShoppingItemEntity item : shoppingItemEntityList) {
             System.out.println(item.toString());
         }
     }
@@ -105,8 +103,8 @@ class ItemRepositoryTest {
     @DisplayName("@Query를 이용한 상품 조회 테스트")
     public void findByItemDetailTestByQueryAnnotation() {
         this.createItemList();
-        List<ItemEntity> itemEntityList = itemRepository.findByItemDetail("테스트 상품 상세 설명");
-        for(ItemEntity item : itemEntityList) {
+        List<ShoppingItemEntity> shoppingItemEntityList = shoppingItemRepository.findByItemDetail("테스트 상품 상세 설명");
+        for(ShoppingItemEntity item : shoppingItemEntityList) {
             System.out.println(item.toString());
         }
     }
@@ -115,8 +113,8 @@ class ItemRepositoryTest {
     @DisplayName("nativeQuery 속성을 이용한 상품 조회 테스트")
     public void findByItemDetailTestByNativeQuery() {
         this.createItemList();
-        List<ItemEntity> itemEntityList = itemRepository.findByItemDetailByNative("테스트 상품 상세 설명");
-        for(ItemEntity item : itemEntityList) {
+        List<ShoppingItemEntity> shoppingItemEntityList = shoppingItemRepository.findByItemDetailByNative("테스트 상품 상세 설명");
+        for(ShoppingItemEntity item : shoppingItemEntityList) {
             System.out.println(item.toString());
         }
     }
@@ -128,23 +126,23 @@ class ItemRepositoryTest {
         JPAQueryFactory queryFactory = new JPAQueryFactory(em);
 
         // Querydsl을 통해 쿼리를 생성하기 위한 Q클래스 사용
-        QItemEntity qItem = QItemEntity.itemEntity;
-        JPAQuery<ItemEntity> query = queryFactory.selectFrom(qItem)
+        QShoppingItemEntity qItem = QShoppingItemEntity.shoppingItemEntity;
+        JPAQuery<ShoppingItemEntity> query = queryFactory.selectFrom(qItem)
                 .where(qItem.itemSellStatus.eq(ItemSellStatus.SELL))
                 .where(qItem.itemDetail.like("%" + "테스트 상품 상세 설명" + "%"))
                 .orderBy(qItem.price.desc());
 
         // 쿼리 결과를 리스트로 반환
-        List<ItemEntity> itemList = query.fetch();
+        List<ShoppingItemEntity> itemList = query.fetch();
 
-        for(ItemEntity item : itemList) {
+        for(ShoppingItemEntity item : itemList) {
             System.out.println(item.toString());
         }
     }
 
     public void creatItemList2() {
         for(int i=1; i<=5; i++) {
-            ItemEntity item = new ItemEntity();
+            ShoppingItemEntity item = new ShoppingItemEntity();
             item.setItemNm("테스트 상품" +  i);
             item.setPrice(10000 + i);
             item.setItemDetail("테스트 상품 상세 설명" + i);
@@ -152,11 +150,11 @@ class ItemRepositoryTest {
             item.setStockNumber(100);
             item.setRegTime(LocalDateTime.now());
             item.setUpdateTime(LocalDateTime.now());
-            itemRepository.save(item);
+            shoppingItemRepository.save(item);
         }
 
         for(int i=6; i<=10; i++) {
-            ItemEntity item = new ItemEntity();
+            ShoppingItemEntity item = new ShoppingItemEntity();
             item.setItemNm("테스트 상품" +  i);
             item.setPrice(10000 + i);
             item.setItemDetail("테스트 상품 상세 설명" + i);
@@ -164,7 +162,7 @@ class ItemRepositoryTest {
             item.setStockNumber(0);
             item.setRegTime(LocalDateTime.now());
             item.setUpdateTime(LocalDateTime.now());
-            itemRepository.save(item);
+            shoppingItemRepository.save(item);
         }
     }
 
@@ -174,7 +172,7 @@ class ItemRepositoryTest {
         this.creatItemList2();
 
         BooleanBuilder booleanBuilder = new BooleanBuilder();
-        QItemEntity item = QItemEntity.itemEntity;
+        QShoppingItemEntity item = QShoppingItemEntity.shoppingItemEntity;
         String itemDetail = "테스트 상품 상세 설명";
         int price = 10003;
         String itemSellStat = "SELL";
@@ -187,11 +185,11 @@ class ItemRepositoryTest {
         }
 
         Pageable pageable = PageRequest.of(0, 5);
-        Page<ItemEntity> itemPagingResult = itemRepository.findAll(booleanBuilder, pageable);
+        Page<ShoppingItemEntity> itemPagingResult = shoppingItemRepository.findAll(booleanBuilder, pageable);
         System.out.println("total elements : " + itemPagingResult.getTotalElements());
 
-        List<ItemEntity> resultItemList = itemPagingResult.getContent();
-        for(ItemEntity resultItem : resultItemList) {
+        List<ShoppingItemEntity> resultItemList = itemPagingResult.getContent();
+        for(ShoppingItemEntity resultItem : resultItemList) {
             System.out.println(resultItem.toString());
         }
     }

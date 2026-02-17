@@ -1,5 +1,12 @@
 # 🍃 스프링 학습 프로젝트
 > **스프링**의 핵심 원리를 적용해서 학습하는 프로젝트입니다.
+---
+
+## 📚 Learning Resources (학습한 책/강의)
+```
+[저자: 이일민] "토비의 스프링" (인프런 강의 포함) - 이해와 원리
+[저자: 변구훈] "스프링 부트 쇼핑몰 프로젝트 with JPA" - 백견불여일타
+```
 
 ---
 
@@ -10,6 +17,7 @@
 [o] JPA
 [o] MySql
 [o] thymeleaf
+[o] p6spy
 [o] 테스트 코드 작성법
 [o] 예외 처리 전략
 [ ] 오브젝트와 의존관계 (IoC, DI)
@@ -53,12 +61,16 @@
 
 1. Database 설정 (MySQL) : 로컬에 MySQL이 설치되어 있어야 하며, 아래의 데이터베이스를 생성해야 합니다.
 ```
-create table springbook.user (
+create table springbook.member (
     id BIGINT primary key,
     name varchar(20) not null,
     password varchar(20) not null
 );
-select * from springbook.user;
+select * from springbook.member;
+select * from springbook.shopping_member;
+select * from springbook.shopping_order;
+select * from springbook.shopping_order_item;
+select * from springbook.shopping_item;
 show databases ;
 use springbook;
 use mysql;
@@ -70,16 +82,16 @@ SELECT user, host FROM mysql.user WHERE user = 'spring';
 GRANT ALL PRIVILEGES ON springbook.* TO 'spring'@'%';
 FLUSH PRIVILEGES;
 
-ALTER TABLE springbook.users MODIFY COLUMN password varchar(20) NOT NULL;
+ALTER TABLE springbook.member MODIFY COLUMN password varchar(20) NOT NULL;
 commit ;
 SHOW GLOBAL VARIABLES LIKE 'PORT';
-DROP TABLE springbook.user;
-DESC springbook.user;
-ALTER TABLE springbook.user MODIFY id BIGINT NOT NULL AUTO_INCREMENT;
-ALTER TABLE springbook.user ADD level tinyint NOT NULL;
-ALTER TABLE springbook.user ADD login int NOT NULL;
-ALTER TABLE springbook.user ADD recommend int NOT NULL;
-ALTER TABLE springbook.user ADD email varchar(100) NOT NULL;
+DROP TABLE springbook.member;
+DESC springbook.member;
+ALTER TABLE springbook.member MODIFY id BIGINT NOT NULL AUTO_INCREMENT;
+ALTER TABLE springbook.member ADD level tinyint NOT NULL;
+ALTER TABLE springbook.member ADD login int NOT NULL;
+ALTER TABLE springbook.member ADD recommend int NOT NULL;
+ALTER TABLE springbook.member ADD email varchar(100) NOT NULL;
 ```
 
 
@@ -96,9 +108,13 @@ ALTER TABLE springbook.user ADD email varchar(100) NOT NULL;
 ## 🛠 주요 라이브러리 (Dependencies)
 ```
 프로젝트의 핵심 의존성 구성입니다. (pom.xml 기준)
- - Spring Boot Starter Web: RESTful API 개발
- - Spring Boot Starter Data JPA: 데이터베이스 영속성 관리
- - MySQL Connector Java: MySQL 연동
- - Springdoc OpenAPI Starter: API 문서 자동화
- - Spring Boot Starter Security: (필요 시) 보안 및 인증 관리
+ - Spring Boot Starter Web          : RESTful API 개발
+ - Spring Boot Starter Data JPA     : 데이터베이스 영속성 관리
+ - Spring Boot Starter Security     : (필요 시) 보안 및 인증 관리
+ - spring-boot-starter-validation   : 객체 값 효율적 검증
+ - mysql-connector-j                : MySQL 연동
+ - h2                               : h2 데이터베이스 의존성
+ - Springdoc OpenAPI Starter        : API 문서 자동화
+ - thymeleaf-layout-dialect         : layout 기능 사용(header, footer, menu)
+ - thymeleaf-extras-springsecurity6 : 로그인/로그아웃 표시
 ```

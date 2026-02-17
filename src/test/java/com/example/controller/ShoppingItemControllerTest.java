@@ -23,7 +23,6 @@ import static org.springframework.security.test.web.servlet.request.SecurityMock
 
 @SpringBootTest(properties = "springdoc.api-docs.enabled=false")
 //@TestPropertySource(locations = "classpath:application-test.yml") // 어노테이션이 역할을 제대로 못함
-@ActiveProfiles("test") // application-test.yml을 선택함
 @AutoConfigureMockMvc   // MockMvc 테스트 설정
 public class ShoppingItemControllerTest {
     /** 테스트 패키지 경로 일치 */

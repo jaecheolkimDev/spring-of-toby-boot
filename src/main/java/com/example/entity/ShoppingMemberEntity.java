@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Setter
 @ToString
 @Table(name="shoppingMember")
-public class ShoppingMemberEntity {
+public class ShoppingMemberEntity extends ShoppingBaseEntity {
 
     @Id
     @Column(name="member_id")
